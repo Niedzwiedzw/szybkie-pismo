@@ -1,6 +1,7 @@
-import {merge, reduce, map, isEqual, some, findLast} from 'lodash';
+import {merge, reduce, map, isEqual, some, findLast, findIndex} from 'lodash';
 import {Block} from "@/extended-markdown-parser/parser";
-import {anyIsEq, reversed} from "@/helpers";
+import {anyIsEq, merged, reversed} from "@/helpers";
+import {Token} from "@/extended-markdown-parser/token";
 
 export interface RenderArgs {
   variables?: {
@@ -14,6 +15,20 @@ export interface RenderArgs {
 export type RenderFn = (kwargs: RenderArgs) => string;
 
 export type Renderer = [RenderArgs, RenderFn];
+
+export function mergeRenderes(renderers: Renderer[]): Renderer {
+  return reduce(
+    renderers,
+    ([masterKwargs, masterFn]: Renderer, [kwargs, fn]: Renderer) => {
+      const newKwargs =  merge(masterKwargs, kwargs);
+      return [
+        newKwargs,
+        (kwargs: RenderArgs) => `${masterFn(kwargs)}${fn(kwargs)}`,
+      ]
+    },
+    [{}, () => ''],
+  )
+}
 
 export function renderIfBlockWithoutElse(block: Block): Renderer {
   const [ifBlock, nextBlock, endIfBlock] = block.tokens;
@@ -38,6 +53,15 @@ export function renderIfBlockWithElse(block: Block): Renderer {
   ]
 }
 
+export function getIfElseBlocks(block: Block): [Block, Block] {
+  const tokens = block.tokens.slice(0, block.tokens.length -1).slice(1);
+  let elseIdx: number | null = findIndex(tokens, (t) => t.type === 'Else');
+
+  return  elseIdx === -1
+    ? [new Block(tokens), new Block([new Token('', -1)])]  // TODO: gahhh...
+    : [new Block(tokens.slice(0, elseIdx)), new Block(tokens.slice(elseIdx))]
+}
+
 export function renderer(block: Block): Renderer {
   if (block.type === 'VariableBlock') {
     return [
@@ -47,25 +71,18 @@ export function renderer(block: Block): Renderer {
   }
 
   if (block.type === 'IfElseBlock') {
-    const tokenTypes = block.tokens.map((t) => t.type);
-    if (anyIsEq(
-      [
-        ['If', 'Text', 'EndIf'],
-        ['If', 'EndIf'],
-      ], tokenTypes)) {
-      return renderIfBlockWithoutElse(block)
-    }
-    if (anyIsEq(
-      [
-        ['If', 'Text', 'Else', 'Text', 'EndIf'],
-        ['If', 'Text', 'Else', 'EndIf'],
-        ['If', 'Else', 'Text', 'EndIf'],
-        ['If', 'Else', 'EndIf'],
-      ], tokenTypes)) {
-      return renderIfBlockWithElse(block)
-    }
+    const [[kwargsTrue, fnTrue], [kwargsFalse, fnFalse]] = getIfElseBlocks(block).map(renderer);
+    const kwargs = merged<RenderArgs, RenderArgs>(
+      merged(kwargsTrue, kwargsFalse),
+      {ifStatements: {[block.primitive.value!]: false}},
+    );
 
-    return [{}, () => block.tokens.map((t) => t.value).join('')]
+    return [
+      kwargs,
+      (kwargs) => kwargs.ifStatements![block.primitive.value!]
+        ? fnTrue(kwargs)
+        : fnFalse(kwargs),
+    ];
   }
 
   if (block.type === 'TextBlock') {
@@ -76,15 +93,5 @@ export function renderer(block: Block): Renderer {
   }
 
   // default case: recursively match the insides
-  return reduce(
-    map(block.blocks, renderer),
-    ([masterKwargs, masterFn]: Renderer, [kwargs, fn]: Renderer) => {
-      const newKwargs =  merge(masterKwargs, kwargs);
-      return [
-        newKwargs,
-        (kwargs: RenderArgs) => `${masterFn(kwargs)}${fn(kwargs)}`,
-      ]
-    },
-    [{}, () => ''],
-  )
+  return mergeRenderes(block.blocks.map(renderer))
 }

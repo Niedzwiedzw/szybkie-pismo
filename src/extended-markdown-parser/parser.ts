@@ -47,8 +47,8 @@ export class Block {
   };
 
   public get primitive(): Token {
-    if (this.tokens.length !== 1) {
-      throw "This is not a primitive block";
+    if (this.tokens.length === 0) {
+      throw "Bad block...";
     }
     return this.tokens[0];
   }
