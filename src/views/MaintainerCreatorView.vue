@@ -2,7 +2,7 @@
   <div class="MaintainerCreatorView">
     <input-box class="input-text" v-model="markdownInput" />
     <div class="rendered-text" v-html="rendered"></div>
-    <render-controllers :controllers="kwargs"/>
+    <render-controllers :controllers="kwargs" class="controllers"/>
   </div>
 </template>
 
@@ -19,7 +19,24 @@ import {merged} from "@/helpers";
   components: {RenderControllers, InputBox },
 })
 export default class MaintainerCreatorView extends Vue {
-  private markdownInput: string = `{{s}}`;
+  private markdownInput: string = `# Język "Durlex"
+
+## Proste użycie
+przykładowa zmienna: {{ twoje_imie }}
+
+przykładowy warunek: {{ if przykladowy_warunek }} Teraz mnie widać {{ else }} a teraz nie {{ fi }}
+
+## Składnia może być zagnieżdżona!
+
+{{ if juz_przywitano }}
+Nie ma co się witać...
+{{ else }}
+Witaj, {{twoje_imie}}
+{{fi}}
+
+
+
+`;
   private kwargs: RenderArgs = {variables: {}, ifStatements: {}};
   private get rendered(): string {
     const renderer = new DynamicText(this.markdownInput);

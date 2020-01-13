@@ -1,21 +1,31 @@
 <template>
   <div class="RenderControllers">
-    <input
+    <div
+        class="variable-input"
+        :key="key"
+        v-for="key of variableKeys"
+    >
+      <div class="title">{{key}}:</div>
+      <input
         type="text"
         :aria-label="key"
-        :placeholder="key"
-        v-for="key of variableKeys"
+        placeholder="null"
         v-model="controllers.variables[key]"
-        :key="key"
-    />
-    <input
+      />
+    </div>
+
+    <div v-for="key of ifKeys" :key="key" class="if-input">
+      <div class="title">{{key}}:</div>
+      <input
         type="checkbox"
         :aria-label="key"
         :placeholder="key"
-        v-for="key of ifKeys"
+        :title="key"
         v-model="controllers.ifStatements[key]"
         :key="key"
-    >
+      >
+    </div>
+
   </div>
 </template>
 
@@ -35,6 +45,40 @@ export default class RenderControllers extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import '../../styles/styles';
+
+$box-width: 17rem;
+$box-height: 3rem;
+
+@mixin box-size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
 .RenderControllers {
+  @include grid-center;
+  grid-template-columns: repeat(auto-fit, 1fr);
+  grid-auto-flow: column;
+
+  .variable-input {
+    @include grid-center-all;
+    @include app-box;
+    @include box-size($box-width, $box-height);
+    grid-template-columns: 3fr 1fr;
+
+    input {
+      width: $box-width*0.6;
+      margin-right: $gap;
+    }
+  }
+
+  .if-input {
+    @include grid-center-all;
+    @include app-box;
+    @include box-size($box-width, $box-height);
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    text-align: center;
+  }
 }
 </style>
