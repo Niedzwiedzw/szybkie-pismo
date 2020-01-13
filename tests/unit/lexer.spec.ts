@@ -1,6 +1,7 @@
 import {isNil} from 'lodash';
 import {Token, TOKEN_REGEX, withinTemplate} from "@/extended-markdown-parser/token";
 import {Lexer} from "@/extended-markdown-parser/lexer";
+import {getTokens} from "@/test-helpers";
 
 describe('Tokenization helper functions work as intended', () => {
   it('withinTemplate function works', () => {
@@ -53,4 +54,33 @@ describe('Lexer spits out proper token stream', () => {
     expect(tokens.length).toEqual(6);
     expect(tokens.map((t) => t.type)).toEqual(['Text', 'If', 'Text', 'Else', 'Text', 'EndIf']);
   });
+
+  it('Properly recognizes an advanced IF statement', () => {
+    const input = 'Ej człowieku... {{ if is_good }}czy ty jesteś normalny?{{ else }}Jesteś spaniałą osobą! {{ fi }} Tak! tak! tak szanowne państwo';
+    const lexer = new Lexer(input);
+    const tokens = lexer.tokens();
+    expect(tokens.length).toEqual(7);
+    expect(tokens.map((t) => t.type)).toEqual(['Text', 'If', 'Text', 'Else', 'Text', 'EndIf', 'Text']);
+  });
+});
+
+describe('Edge cases..', () => {
+  const cases: string[] = [
+    '{{',
+    '{',
+    '{{}}',
+    '{}}',
+    'kononowicz {{',
+    'kononowicz {{ ',
+    'kononowicz {{ }',
+    'kononowicz {{ }}',
+    'kononowicz {{}}',
+  ];
+  for (const input of cases) {
+    it(input, () => {
+      const tokens = getTokens(input);
+      expect(tokens.length).toEqual(1);
+      expect(tokens[0].type).toEqual('Text');
+    })
+  }
 });

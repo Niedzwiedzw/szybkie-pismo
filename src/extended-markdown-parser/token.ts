@@ -11,8 +11,9 @@ export const TEMPLATE_END_RE = '\\}\\}';
 
 export const LEGAL_VARIABLE_REGEX = '[\\w_]+';
 
-
 export const withinTemplate = (re: string) => `${TEMPLATE_BEGIN_RE}\\s*${re}\\s*${TEMPLATE_END_RE}`;
+
+export const ANYTHING_IN_TEMPLATE_REGEXP = new RegExp(`${withinTemplate('.*?')}`);
 
 const STARTS_WITH_TEMPLATE_REGEXP = new RegExp(`^${withinTemplate('.*?')}`);
 
@@ -22,18 +23,25 @@ export function leadingTemplate(input: string, position: number): Token | null {
 
   return isNil(result)
     ? null
-    : new Token(result, 0);  // TODO: fix position
+    : new Token(result, position);  // TODO: fix position
 }
 
 export function getText(input: string, position: number): Token {
-  for (let i=0; i < input.length - TEMPLATE_BEGIN.length; i++) {
-    const slice = input.slice(i, i + TEMPLATE_BEGIN.length);
-    if (slice === TEMPLATE_BEGIN) {
-      return new Token(input.slice(0, i), i);
-    }
+  // for (let i=0; i < input.length - TEMPLATE_BEGIN.length; i++) {
+  //   const slice = input.slice(i, i + TEMPLATE_BEGIN.length);
+  //   if (slice === TEMPLATE_BEGIN && input.slice(i).includes(TEMPLATE_END)) {
+  //     return new Token(
+  //       input.slice(0, i),
+  //       position + i,
+  //       !input.slice(i).includes(TEMPLATE_END)
+  //     );
+  //   }
+  // }
+  const match = input.match(ANYTHING_IN_TEMPLATE_REGEXP);
+  if (!isNil(match)) {
+    return new Token(input.slice(0, match.index!), position)
   }
-
-  return new Token(input, 0);  // TODO: fix position
+  return new Token(input, position, true);  // TODO: fix position
 }
 
 export type TokenType = 'Variable' | 'Text' | 'If' | 'Else' | 'EndIf';
@@ -58,10 +66,13 @@ export class Token {
   public constructor(
     public readonly raw: string,
     public readonly position: number,
+    public forceText: boolean = false,
   ) {}
 
   private _type: TokenType | null = null;
   public get type(): TokenType {
+    if (this.forceText) { return 'Text'; }
+
     if (!isNil(this._type)) {
       return this._type;
     }
