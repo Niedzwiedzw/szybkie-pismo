@@ -1,0 +1,14 @@
+# Język "Durlex"
+
+## Proste użycie
+przykładowa zmienna: {{ twoje_imie }}
+
+przykładowy warunek: {{ if przykladowy_warunek }} Teraz mnie widać {{ else }} a teraz nie {{ fi }}
+
+## Składnia może być zagnieżdżona!
+
+{{ if juz_przywitano }}
+Nie ma co się witać...
+{{ else }}
+Witaj, {{twoje_imie}}
+{{fi}}

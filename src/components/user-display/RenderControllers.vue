@@ -47,7 +47,7 @@ export default class RenderControllers extends Vue {
 <style scoped lang="scss">
 @import '../../styles/styles';
 
-$box-width: 17rem;
+$box-width: 33rem;
 $box-height: 3rem;
 
 @mixin box-size($width, $height) {
@@ -57,9 +57,15 @@ $box-height: 3rem;
 
 .RenderControllers {
   @include grid-center;
-  grid-template-columns: repeat(auto-fit, 1fr);
-  grid-auto-flow: column;
+  grid-template-columns: repeat(auto-fit, minmax($box-width, 1fr));
+  grid-gap: $gap;
+  grid-auto-flow: dense;
+  padding-bottom: 2*$gap;
+  text-overflow: ellipsis;
 
+  * {
+    max-width: $box-width;
+  }
   .variable-input {
     @include grid-center-all;
     @include app-box;
@@ -67,18 +73,16 @@ $box-height: 3rem;
     grid-template-columns: 3fr 1fr;
 
     input {
-      width: $box-width*0.6;
+      width: $box-width*0.4;
       margin-right: $gap;
     }
   }
 
   .if-input {
-    @include grid-center-all;
+    @include grid-center;
     @include app-box;
     @include box-size($box-width, $box-height);
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    text-align: center;
+    grid-template-columns: 5fr 5*$gap;
   }
 }
 </style>

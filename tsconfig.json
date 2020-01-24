@@ -13,7 +13,8 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "raw-loader.d.ts"
     ],
     "paths": {
       "@/*": [

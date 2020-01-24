@@ -1,5 +1,10 @@
 <template>
   <div class="MaintainerCreatorView">
+    <div class="available-documents">
+      <select name="Available documents" id="available-documents" v-model="selected">
+        <option v-for="name of documentNames" :key="name">{{name}}</option>
+      </select>
+    </div>
     <input-box class="input-text" v-model="markdownInput" />
     <div class="rendered-text" v-html="rendered"></div>
     <render-controllers :controllers="kwargs" class="controllers"/>
@@ -7,36 +12,31 @@
 </template>
 
 <script lang="ts">
-import {merge, pick, keys, cloneDeep} from 'lodash';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import {merge, pick, keys, cloneDeep, first, values} from 'lodash';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import InputBox from '@/components/maintainer-creator/InputBox.vue';
 import { DynamicText } from '@/extended-markdown-parser/transform';
 import {RenderArgs} from "@/extended-markdown-parser/renderer";
 import RenderControllers from "@/components/user-display/RenderControllers.vue";
 import {merged} from "@/helpers";
+import {SUPPORTED_DOCUMENTS} from "@/documents";
 
 @Component({
   components: {RenderControllers, InputBox },
 })
 export default class MaintainerCreatorView extends Vue {
-  private markdownInput: string = `# Język "Durlex"
+  private markdownInput: string = '';
 
-## Proste użycie
-przykładowa zmienna: {{ twoje_imie }}
+  private supportedDocuments = SUPPORTED_DOCUMENTS;
 
-przykładowy warunek: {{ if przykladowy_warunek }} Teraz mnie widać {{ else }} a teraz nie {{ fi }}
+  private get documentNames(): string[] { return keys(this.supportedDocuments); }
+  private selected: string | null = null;
 
-## Składnia może być zagnieżdżona!
+  @Watch('selected')
+  private onSelection(newVal: string, oldVal: string) {
+    this.markdownInput = this.supportedDocuments[newVal];
+  }
 
-{{ if juz_przywitano }}
-Nie ma co się witać...
-{{ else }}
-Witaj, {{twoje_imie}}
-{{fi}}
-
-
-
-`;
   private kwargs: RenderArgs = {variables: {}, ifStatements: {}};
   private get rendered(): string {
     const renderer = new DynamicText(this.markdownInput);
@@ -56,8 +56,12 @@ Witaj, {{twoje_imie}}
 .MaintainerCreatorView {
   @include grid-center;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 3fr 1fr;
+  grid-template-rows: 3rem 3fr 1fr;
   grid-gap: $gap;
+
+  .available-documents {
+    grid-column: 1 / -1;
+  }
 
   .input-text {
     width: 100%;
@@ -69,7 +73,8 @@ Witaj, {{twoje_imie}}
   }
 
   .controllers {
-    grid-row: 2;
+    @include grid-center;
+    grid-row: 3;
     grid-column: 1 / -1;
   }
 }
