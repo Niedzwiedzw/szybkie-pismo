@@ -11,7 +11,10 @@
             class="commentary-box"
             v-model="commentary"
     />
-    <render-controllers :controllers="kwargs" class="controllers"/>
+    <render-controllers
+        :commentary="commentary"
+        :controllers="kwargs"
+        class="controllers"/>
   </div>
 </template>
 
@@ -73,11 +76,16 @@ export default class MaintainerCreatorView extends Vue {
 <style scoped lang="scss">
 @import '../styles/styles';
 
+
 .MaintainerCreatorView {
   @include grid-center;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 3rem 3fr 1fr;
   grid-gap: $gap;
+
+  * {
+    @include app-box;
+  }
 
   .available-documents {
     grid-column: 1 / -1;

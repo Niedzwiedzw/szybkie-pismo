@@ -4,8 +4,7 @@
         type="text"
         v-for="key of variables"
         :key="key"
-        :value="value[key]"
-        @input="(newVal) => setValue(key, newVal)"
+        v-model="value[key]"
         :placeholder="key"
     />
   </div>
@@ -44,6 +43,7 @@ $input-height: 2rem;
   grid-template-columns: repeat(auto-fill, minmax($input-width, 1fr));
   grid-gap: $gap;
   input {
+    @include app-box;
     width: 95%;
   }
 }

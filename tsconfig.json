@@ -14,7 +14,8 @@
     "types": [
       "webpack-env",
       "jest",
-      "raw-loader.d.ts"
+      "raw-loader.d.ts",
+      "vuetify"
     ],
     "paths": {
       "@/*": [

@@ -5,7 +5,10 @@
         :key="key"
         v-for="key of variableKeys"
     >
-      <div class="title">{{key}}:</div>
+      <div class="variable-title">{{key}}:</div>
+
+      <help-tooltip :text="commentary[key]"/>
+
       <input
         type="text"
         :aria-label="key"
@@ -15,7 +18,8 @@
     </div>
 
     <div v-for="key of ifKeys" :key="key" class="if-input">
-      <div class="title">{{key}}:</div>
+      <div class="variable-title">{{key}}:</div>
+      <help-tooltip :text="commentary[key]"/>
       <input
         type="checkbox"
         :aria-label="key"
@@ -30,15 +34,16 @@
 </template>
 
 <script lang="ts">
-import {keys} from 'lodash';
+import {keys, isNil} from 'lodash';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import {RenderArgs} from "@/extended-markdown-parser/renderer";
 import {Commentary} from "@/extended-markdown-parser/commentary";
-
+import HelpTooltip from "@/components/common/HelpTooltip.vue";
 
 
 @Component({
   components: {
+    HelpTooltip,
   },
 })
 export default class RenderControllers extends Vue {
@@ -50,6 +55,8 @@ export default class RenderControllers extends Vue {
   private commentaryFor(key: string): string | null {
     return this.commentary[key] ?? null;
   }
+
+  private isNil = isNil;
 }
 </script>
 
@@ -79,9 +86,10 @@ $box-height: 3rem;
     @include grid-center-all;
     @include app-box;
     @include box-size($box-width, $box-height);
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 2rem 1fr;
 
     input {
+      @include app-box;
       width: $box-width*0.4;
       margin-right: $gap;
     }
@@ -91,7 +99,7 @@ $box-height: 3rem;
     @include grid-center;
     @include app-box;
     @include box-size($box-width, $box-height);
-    grid-template-columns: 5fr 5*$gap;
+    grid-template-columns: 5fr 2rem 5*$gap;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <router-view />
-  </div>
+  </v-app>
 </template>
 
 <style lang="scss">
@@ -25,9 +25,5 @@
       color: #42b983;
     }
   }
-}
-html,
-body {
-  height: 100% !important;
 }
 </style>
