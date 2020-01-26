@@ -9,6 +9,7 @@
     <div class="rendered-text" v-html="rendered"></div>
     <commentary-box
             class="commentary-box"
+            v-model="commentary"
     />
     <render-controllers :controllers="kwargs" class="controllers"/>
   </div>
@@ -24,12 +25,14 @@ import RenderControllers from "@/components/user-display/RenderControllers.vue";
 import {merged} from "@/helpers";
 import {SUPPORTED_DOCUMENTS} from "@/documents";
 import CommentaryBox from "@/components/maintainer-creator/CommentaryBox.vue";
+import {Commentary} from "@/extended-markdown-parser/commentary";
 
 @Component({
   components: {CommentaryBox, RenderControllers, InputBox },
 })
 export default class MaintainerCreatorView extends Vue {
   private markdownInput: string = '';
+  private commentary: Commentary = this.updatedCommentary;
 
   private supportedDocuments = SUPPORTED_DOCUMENTS;
 
@@ -39,12 +42,21 @@ export default class MaintainerCreatorView extends Vue {
   @Watch('selected')
   private onSelection(newVal: string, oldVal: string) {
     this.markdownInput = this.supportedDocuments[newVal];
+    setTimeout(() => {
+      this.commentary = this.updatedCommentary;
+    }, 100);
   }
 
   private kwargs: RenderArgs = {variables: {}, ifStatements: {}};
 
-  private get allVariables() { return [...keys(this.kwargs.ifStatements), ...keys(this.kwargs.variables)] }
-  private get emptyCommentary() { return fromPairs(map(this.allVariables, (v) => [v, ''])); }
+  private get allVariables() { return [
+    ...keys(this.kwargs?.ifStatements ?? {}),
+    ...keys(this.kwargs?.variables ?? {}),
+  ]}
+  private get updatedCommentary() { return pick({
+    ...fromPairs(map(this.allVariables, (v) => [v, ''])),
+    ...(this.commentary ?? {}),
+  }, this.allVariables); }
 
   private get rendered(): string {
     const renderer = new DynamicText(this.markdownInput);
@@ -83,6 +95,7 @@ export default class MaintainerCreatorView extends Vue {
   .commentary-box {
     grid-row: 3;
     grid-column: 1 / -1;
+    margin-bottom: $gap;
   }
 
   .controllers {

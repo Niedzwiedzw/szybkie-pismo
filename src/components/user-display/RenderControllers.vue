@@ -33,14 +33,23 @@
 import {keys} from 'lodash';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import {RenderArgs} from "@/extended-markdown-parser/renderer";
+import {Commentary} from "@/extended-markdown-parser/commentary";
+
+
+
 @Component({
-  components: {},
+  components: {
+  },
 })
 export default class RenderControllers extends Vue {
   @Prop({required: true}) controllers!: RenderArgs;
+  @Prop({required: true}) commentary!: Commentary;
 
   private get ifKeys(): string[] { return keys(this.controllers.ifStatements) }
   private get variableKeys(): string[] { return keys(this.controllers.variables) }
+  private commentaryFor(key: string): string | null {
+    return this.commentary[key] ?? null;
+  }
 }
 </script>
 
@@ -51,7 +60,7 @@ $box-width: 33rem;
 $box-height: 3rem;
 
 @mixin box-size($width, $height) {
-  width: $width;
+  width: 100%;
   height: $height;
 }
 
