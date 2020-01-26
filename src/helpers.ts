@@ -19,3 +19,6 @@ export function merged<TObject, TSource>(object: TObject, source:TSource): TObje
   source = cloneDeep(source);
   return merge(object, source);
 }
+
+export function updateWith() {}
+

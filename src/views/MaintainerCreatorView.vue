@@ -7,12 +7,15 @@
     </div>
     <input-box class="input-text" v-model="markdownInput" />
     <div class="rendered-text" v-html="rendered"></div>
+    <commentary-box
+            class="commentary-box"
+    />
     <render-controllers :controllers="kwargs" class="controllers"/>
   </div>
 </template>
 
 <script lang="ts">
-import {merge, pick, keys, cloneDeep, first, values} from 'lodash';
+import {merge, pick, keys, cloneDeep, first, values, fromPairs, map} from 'lodash';
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import InputBox from '@/components/maintainer-creator/InputBox.vue';
 import { DynamicText } from '@/extended-markdown-parser/transform';
@@ -20,9 +23,10 @@ import {RenderArgs} from "@/extended-markdown-parser/renderer";
 import RenderControllers from "@/components/user-display/RenderControllers.vue";
 import {merged} from "@/helpers";
 import {SUPPORTED_DOCUMENTS} from "@/documents";
+import CommentaryBox from "@/components/maintainer-creator/CommentaryBox.vue";
 
 @Component({
-  components: {RenderControllers, InputBox },
+  components: {CommentaryBox, RenderControllers, InputBox },
 })
 export default class MaintainerCreatorView extends Vue {
   private markdownInput: string = '';
@@ -38,6 +42,10 @@ export default class MaintainerCreatorView extends Vue {
   }
 
   private kwargs: RenderArgs = {variables: {}, ifStatements: {}};
+
+  private get allVariables() { return [...keys(this.kwargs.ifStatements), ...keys(this.kwargs.variables)] }
+  private get emptyCommentary() { return fromPairs(map(this.allVariables, (v) => [v, ''])); }
+
   private get rendered(): string {
     const renderer = new DynamicText(this.markdownInput);
     const [kwargs, fn] = renderer.renderer;
@@ -72,9 +80,14 @@ export default class MaintainerCreatorView extends Vue {
     width: 100%;
   }
 
+  .commentary-box {
+    grid-row: 3;
+    grid-column: 1 / -1;
+  }
+
   .controllers {
     @include grid-center;
-    grid-row: 3;
+    grid-row: 4;
     grid-column: 1 / -1;
   }
 }
