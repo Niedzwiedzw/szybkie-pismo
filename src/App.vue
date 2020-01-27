@@ -37,6 +37,10 @@ html, body {
   & * {
     background-color: $primary-background-color;
   }
+
+  @include media("<=tablet") {
+    font-size: 7px;
+  }
 }
 
 input {

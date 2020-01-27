@@ -95,6 +95,10 @@ export default class MaintainerCreatorView extends Vue {
   grid-template-rows: repeat(2, min-content);
   grid-gap: $gap;
 
+  @include media("<=tablet") {
+    grid-template-columns: 1fr;
+  }
+
   * {
     @include app-box;
     width: 100%;

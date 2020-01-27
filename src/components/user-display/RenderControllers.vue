@@ -113,6 +113,11 @@ $box-height: 2.5rem;
     grid-auto-flow: dense;
     text-overflow: ellipsis;
 
+    @include media("<=tablet") {
+      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+      padding: $gap/3;
+    }
+
     * {
       max-width: $box-width;
     }
@@ -139,6 +144,12 @@ $box-height: 2.5rem;
         @include app-box;
         width: $box-width*0.4;
         margin-right: $gap;
+
+        @include media("<=tablet") {
+
+          width: $box-width*0.1;
+          padding: $gap/3;
+        }
       }
     }
 
