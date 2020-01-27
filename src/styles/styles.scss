@@ -2,7 +2,7 @@
 
 // variables
 $gap: 1.5rem;
-$primary-background-color: darken(lightgray, 10%);
+$primary-background-color: #EEEEEE;
 $input-height: 3rem;
 $special-text-color: #42b983;
 
@@ -25,14 +25,15 @@ $special-text-color: #42b983;
 }
 
 @mixin neo-shadow($size) {
+  $spread: $size;
   box-shadow:
-          $size $size $size*2.8 rgba(black, .45),
-          -1*$size -1*$size $size*1.8 rgba(white, .65);
+          $size $size $spread 0 rgba(black, .06),
+          -1*$size -1*$size $spread 0 rgba(white, .4);
 }
 
 @mixin app-box {
   @include vuetify-shadow;
-  @include neo-shadow(2px);
+  @include neo-shadow(6px);
   overflow: hidden;
   border-radius: $gap/3 !important;
   color: #2c3e50;
