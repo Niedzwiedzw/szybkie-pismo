@@ -26,8 +26,8 @@ $special-text-color: #42b983;
 
 @mixin neo-shadow($size) {
   box-shadow:
-          $size $size $size*1.4 rgba(black, .4),
-          -1*$size -1*$size $size*1.4 rgba(white, .25);
+          $size $size $size*2.8 rgba(black, .45),
+          -1*$size -1*$size $size*1.8 rgba(white, .65);
 }
 
 @mixin app-box {

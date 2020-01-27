@@ -106,9 +106,11 @@ export default class MaintainerCreatorView extends Vue {
 
   .available-documents {
     grid-column: 1 / -1;
-    select {
+    & select, option {
       height: $input-height;
       text-align: center;
+      background-color: black;
+      color: whitesmoke;
     }
   }
 
