@@ -1,6 +1,6 @@
 <template>
   <div class="RenderControllers">
-
+    <h3>zmienne</h3>
     <div class="controller-group" v-for="(group, index) of keysByPrefix" :key="index">
       <div class="group-name" v-if="groupName(group) !== null">{{groupName(group)}}</div>
       <div
@@ -100,6 +100,10 @@ $box-height: 2.5rem;
   padding: $gap;
   grid-gap: $gap;
 
+  h3 {
+    color: $special-text-color;
+  }
+
   .controller-group {
     padding: $gap;
     @include grid-center;
@@ -117,7 +121,11 @@ $box-height: 2.5rem;
       @include app-box;
       padding: $gap/2;
       font-weight: bold;
-      color: #42b983;
+      color: whitesmoke;
+      height: $input-height;
+      width: 100%;
+      text-align: center;
+      background-color: darken($primary-background-color, 50%);
     }
 
     .variable-input {
@@ -125,6 +133,7 @@ $box-height: 2.5rem;
       @include app-box;
       @include box-size($box-width, $box-height);
       grid-template-columns: 3fr 2rem 1fr;
+      height: $input-height;
 
       input {
         @include app-box;
@@ -138,6 +147,7 @@ $box-height: 2.5rem;
       @include app-box;
       @include box-size($box-width, $box-height);
       grid-template-columns: 5fr 2rem 5*$gap;
+      height: $input-height;
     }
   }
 }

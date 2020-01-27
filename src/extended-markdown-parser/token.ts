@@ -9,7 +9,7 @@ export const TEMPLATE_BEGIN_RE = '\\{\\{';
 export const TEMPLATE_END = '}}';
 export const TEMPLATE_END_RE = '\\}\\}';
 
-export const LEGAL_VARIABLE_REGEX = '[\\w_]+';
+export const LEGAL_VARIABLE_REGEX = '[\\w_ęóąśłżźćń]+';
 
 export const withinTemplate = (re: string) => `${TEMPLATE_BEGIN_RE}\\s*${re}\\s*${TEMPLATE_END_RE}`;
 

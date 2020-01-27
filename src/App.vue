@@ -24,7 +24,7 @@
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: $special-text-color;
     }
   }
 }
@@ -48,5 +48,10 @@ input {
   & * {
     background-color: black !important;
   }
+}
+
+
+.v-application--wrap {
+  width: 100%;
 }
 </style>

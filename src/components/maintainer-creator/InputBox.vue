@@ -42,6 +42,7 @@ export default class InputBox extends Vue {
   textarea {
     height: 90%;
     width: 100%;
+    min-height: 20vh;
   }
 }
 </style>

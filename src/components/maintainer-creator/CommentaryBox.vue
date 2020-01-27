@@ -1,5 +1,6 @@
 <template>
   <div class="CommentaryBox">
+    <h3>komentarze</h3>
     <input
         type="text"
         v-for="key of variables"
@@ -36,16 +37,21 @@ export default class CommentaryBox extends Vue {
 @import "../../styles/styles";
 
 $input-width: 30rem;
-$input-height: 2rem;
 
 .CommentaryBox {
   @include grid-center;
   padding: $gap;
   grid-template-columns: repeat(auto-fill, minmax($input-width, 1fr));
+  grid-auto-rows: min-content;
   grid-gap: $gap;
+  h3 {
+    grid-column: 1 / -1;
+    color: $special-text-color;
+  }
   input {
     @include app-box;
     width: 95%;
+    height: $input-height;
   }
 }
 </style>

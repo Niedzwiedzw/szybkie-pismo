@@ -1,0 +1,34 @@
+{{pismo__miejscowość}}, dnia {{pismo__data}} roku
+
+**{{sąd__nazwa}}   
+{{sąd__wydział}}  
+{{sąd__adres}}
+{{sąd__kod_pocztowy}}  
+{{sąd__miejscowość}}**
+
+
+**Powód:		{{powód__imię}} {{powód__nazwisko}}
+		{{powód__adres_1}}
+		{{powód__adres_2}}**
+
+**Pozwany:	{{pozwany__imię}} {{pozwany__nazwisko}}
+		{{pozwany__adres_1}}
+		{{pozwany__adres_2}}**
+
+Sygn. akt Sądu I instancji: {{sygnatura__1_instancja}}
+Sygn. akt Sądu II instancji: {{sygnatura__2_instancja}}
+
+###WNIOSEK O NADANIE KLAUZULI WYKONALNOŚCI
+
+Ja niżej podpisana {{pozwany__imię}} {{pozwany__nazwisko}} na zasadzie art. 781 § 1 k.p.c., wnoszę o:
+1. sporządzenie odpisu wyroku, wydanego przez  {{wyrok_1__nazwa_sądu}} w dniu {{wyrok_1__data_wyroku}} roku w sprawie o sygnaturze akt  {{wyrok_1__sygnatura}} i doręczenie tegoż odpisu na mój adres wraz z klauzulą wykonalności co do tego punktu przedmiotowego wyroku, mocą którego Wysoki Sąd zasądził od powoda na rzecz pozwanej zwrot kosztów procesu,
+2. sporządzenie odpisu wyroku, wydanego przez  {{wyrok_2__nazwa_sądu}} {{wyrok_2__wydział_sądu}} w dniu {{wyrok_2__data_wyroku}} roku w sprawie o sygnaturze akt  {{wyrok_2__sygnatura}}  i doręczenie tegoż odpisu na mój adres wraz z klauzulą wykonalności co do tego punktu przedmiotowego wyroku, mocą którego Wysoki Sąd zasądził od powoda na rzecz pozwanej zwrot kosztów procesu,
+3. zasądzenie od powoda na rzecz pozwanej kosztów postępowania klauzulowego, według norm prawem przepisanych.
+
+Z poważaniem
+
+
+{{ if posiada_potwierdzenie_dokonania_oplaty_kancelaryjnej}}
+Załącznik:
+1. potwierdzenie dokonania opłaty kancelaryjnej
+{{fi}}

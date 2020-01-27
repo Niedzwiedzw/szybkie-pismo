@@ -1,4 +1,4 @@
-import {some, isEqual, cloneDeep, reverse, merge} from 'lodash';
+import {some, isEqual, cloneDeep, reverse, merge, keys, pick} from 'lodash';
 
 /* eslint-disable no-console */
 export function dbg<T>(input: T): T {
@@ -20,5 +20,8 @@ export function merged<TObject, TSource>(object: TObject, source:TSource): TObje
   return merge(object, source);
 }
 
-export function updateWith() {}
-
+export function updateOwn<T, U>(source: T, newObj: U) {
+  let newObject = merged(source, newObj);
+  newObject = pick(newObject, keys(source)) as any;
+  return newObject;
+}

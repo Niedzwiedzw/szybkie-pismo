@@ -5,11 +5,11 @@
         <option v-for="name of documentNames" :key="name">{{name}}</option>
       </select>
     </div>
-    <input-box class="input-text" v-model="markdownInput" />
+    <input-box class="input-text" v-model="markdownInput"/>
     <div class="rendered-text" v-html="rendered"></div>
     <commentary-box
-            class="commentary-box"
-            v-model="commentary"
+        class="commentary-box"
+        v-model="commentary"
     />
     <render-controllers
         :commentary="commentary"
@@ -19,47 +19,59 @@
 </template>
 
 <script lang="ts">
-import {merge, pick, keys, cloneDeep, first, values, fromPairs, map} from 'lodash';
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import {pick, keys, fromPairs, map, replace, capitalize} from 'lodash';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import InputBox from '@/components/maintainer-creator/InputBox.vue';
-import { DynamicText } from '@/extended-markdown-parser/transform';
+import {DynamicText} from '@/extended-markdown-parser/transform';
 import {RenderArgs} from "@/extended-markdown-parser/renderer";
 import RenderControllers from "@/components/user-display/RenderControllers.vue";
-import {merged} from "@/helpers";
+import {merged, updateOwn} from "@/helpers";
 import {SUPPORTED_DOCUMENTS} from "@/documents";
 import CommentaryBox from "@/components/maintainer-creator/CommentaryBox.vue";
 import {Commentary} from "@/extended-markdown-parser/commentary";
 
 @Component({
-  components: {CommentaryBox, RenderControllers, InputBox },
+  components: {CommentaryBox, RenderControllers, InputBox},
 })
 export default class MaintainerCreatorView extends Vue {
   private markdownInput: string = '';
-  private commentary: Commentary = this.updatedCommentary;
+  private commentary: Commentary = this.emptyCommentary;
 
   private supportedDocuments = SUPPORTED_DOCUMENTS;
 
-  private get documentNames(): string[] { return keys(this.supportedDocuments); }
+  private get documentNames(): string[] {
+    return keys(this.supportedDocuments);
+  }
+
   private selected: string | null = null;
 
   @Watch('selected')
   private onSelection(newVal: string, oldVal: string) {
     this.markdownInput = this.supportedDocuments[newVal];
+  }
+
+  @Watch('markdownInput')
+  private onMarkdownChange(newVal: string, oldVal: string) {
     setTimeout(() => {
-      this.commentary = this.updatedCommentary;
-    }, 100);
+      this.commentary = updateOwn(this.emptyCommentary, this.commentary);
+    }, 10);
   }
 
   private kwargs: RenderArgs = {variables: {}, ifStatements: {}};
 
-  private get allVariables() { return [
-    ...keys(this.kwargs?.ifStatements ?? {}),
-    ...keys(this.kwargs?.variables ?? {}),
-  ]}
-  private get updatedCommentary() { return pick({
-    ...fromPairs(map(this.allVariables, (v) => [v, ''])),
-    ...(this.commentary ?? {}),
-  }, this.allVariables); }
+  private get allVariables() {
+    return [
+      ...keys(this.kwargs?.ifStatements ?? {}),
+      ...keys(this.kwargs?.variables ?? {}),
+    ]
+  }
+
+  private get emptyCommentary() {
+    return pick({
+      ...fromPairs(map(this.allVariables, (v) => [v, capitalize(replace(v, /_/g, ' '))])),
+      ...(this.commentary ?? {}),
+    }, this.allVariables);
+  }
 
   private get rendered(): string {
     const renderer = new DynamicText(this.markdownInput);
@@ -80,21 +92,27 @@ export default class MaintainerCreatorView extends Vue {
 .MaintainerCreatorView {
   @include grid-center;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 3rem 3fr 1fr;
+  grid-template-rows: repeat(2, min-content);
   grid-gap: $gap;
 
   * {
     @include app-box;
+    width: 100%;
   }
 
   .available-documents {
     grid-column: 1 / -1;
+    select {
+      height: $input-height;
+      text-align: center;
+    }
   }
 
   .input-text {
     width: 100%;
     height: 100%;
   }
+
   .rendered-text {
     padding: $gap;
     height: 100%;
@@ -102,15 +120,11 @@ export default class MaintainerCreatorView extends Vue {
   }
 
   .commentary-box {
-    grid-row: 3;
-    grid-column: 1 / -1;
-    margin-bottom: $gap;
+    grid-column: 1;
   }
 
   .controllers {
     @include grid-center;
-    grid-row: 4;
-    grid-column: 1 / -1;
   }
 }
 </style>

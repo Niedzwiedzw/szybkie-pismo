@@ -1,8 +1,8 @@
 // variables
 $gap: 1.5rem;
-$primary-background-color: lightgray;
-
-
+$primary-background-color: darken(lightgray, 10%);
+$input-height: 3rem;
+$special-text-color: #42b983;
 
 @mixin grid-center {
   display: grid;
@@ -24,8 +24,8 @@ $primary-background-color: lightgray;
 
 @mixin neo-shadow($size) {
   box-shadow:
-          $size $size $size*1.4 rgba(black, .5),
-          -1*$size -1*$size $size*1.4 rgba(white, .5);
+          $size $size $size*1.4 rgba(black, .4),
+          -1*$size -1*$size $size*1.4 rgba(white, .25);
 }
 
 @mixin app-box {
