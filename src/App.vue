@@ -42,4 +42,11 @@ html, body {
 input {
   text-align: center;
 }
+
+.v-tooltip__content {
+  background-color: black !important;
+  & * {
+    background-color: black !important;
+  }
+}
 </style>
