@@ -33,7 +33,9 @@ export default class InputBox extends Vue {
 </script>
 
 <style scoped lang="scss">
+@import "../../styles/styles";
 .InputBox {
+  padding: $gap;
   .markdown-input-label {
     visibility: hidden;
   }

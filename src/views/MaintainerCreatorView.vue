@@ -96,6 +96,7 @@ export default class MaintainerCreatorView extends Vue {
     height: 100%;
   }
   .rendered-text {
+    padding: $gap;
     height: 100%;
     width: 100%;
   }

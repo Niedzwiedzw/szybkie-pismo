@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <router-view />
+    <router-view class="contents"/>
   </v-app>
 </template>
 
@@ -12,11 +12,13 @@
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  .contents {
+    padding: 2vw;
+  }
 }
 
 #nav {
-  padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -25,5 +27,19 @@
       color: #42b983;
     }
   }
+}
+.v-application {
+  background: $primary-background-color !important;
+}
+
+html, body {
+  background-color: $primary-background-color !important;
+  & * {
+    background-color: $primary-background-color;
+  }
+}
+
+input {
+  text-align: center;
 }
 </style>

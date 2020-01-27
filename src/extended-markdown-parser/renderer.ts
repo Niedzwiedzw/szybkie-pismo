@@ -1,4 +1,4 @@
-import {merge, reduce, map, isEqual, some, findLast, findIndex} from 'lodash';
+import {merge, reduce, findIndex} from 'lodash';
 import {Block} from "@/extended-markdown-parser/parser";
 import {anyIsEq, merged, reversed} from "@/helpers";
 import {Token} from "@/extended-markdown-parser/token";

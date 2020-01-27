@@ -12,3 +12,24 @@ Nie ma co się witać...
 {{ else }}
 Witaj, {{twoje_imie}}
 {{fi}}
+
+
+## Warto grupować ze sobą zmienne powiązane w jakiś sposób
+Zwiększa to użyteczność szablonu dla końcowego użytkownika.
+Robimy to za pomocą podwójnego podkreślnika `__`
+
+Przykład:
+
+#### ŹLE!:
+
+Witaj {{ imie_pozwanego }} {{ nazwisko_pozwanego }}. 
+
+Pozywam cię na kwotę {{ kwota_roszczenia }}. Powodem roszczenia jest {{ powod_roszczenia }}
+
+
+#### DOBRZE!
+Witaj {{pozwany__imie }} {{ pozwany__nazwisko }}.
+Pozywam cię na kwotę {{ roszczenie__kwota }}. Powodem roszczenia jest {{ roszczenie__powod }}.
+
+
+Zmienne będą pogrupowane według wartości przed podwójnym podkreślnikiem `__`.

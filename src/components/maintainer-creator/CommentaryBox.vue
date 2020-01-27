@@ -40,6 +40,7 @@ $input-height: 2rem;
 
 .CommentaryBox {
   @include grid-center;
+  padding: $gap;
   grid-template-columns: repeat(auto-fill, minmax($input-width, 1fr));
   grid-gap: $gap;
   input {
