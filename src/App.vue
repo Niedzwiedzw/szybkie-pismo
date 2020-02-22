@@ -1,8 +1,21 @@
 <template>
   <v-app id="app">
-    <router-view class="contents"/>
+    <durlex-navbar class="durlex-navbar"/>
+    <transition name="slide" mode="out-in">
+      <router-view class="site-content"/>
+    </transition>
   </v-app>
 </template>
+
+<script>
+import { defineComponent } from "@vue/composition-api";
+import DurlexNavbar from '@/views/DurlexNavbar.vue';
+export default defineComponent({
+  components: {
+    DurlexNavbar,
+  },
+});
+</script>
 
 <style lang="scss">
 @import 'styles/styles';
@@ -13,34 +26,36 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  .contents {
-    padding: 2vw;
+  .site-content {
+    @include grid-center;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: $remaining-page;
+    padding: $gap;
+    color: color(black);
   }
 }
 
-#nav {
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: $special-text-color;
-    }
+body, html, #app {
+  &, & > .v-application--wrap {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: color(white);
   }
 }
-.v-application {
-  background: $primary-background-color !important;
+
+#app {
 }
+
+// .v-application {
+//   background: $primary-background-color !important;
+// }
 
 html, body {
-  background-color: $primary-background-color !important;
-  & * {
-    background-color: $primary-background-color;
-  }
+    background-color: color(white);
+    color: color(white);
 
-  @include media("<=tablet") {
-    font-size: 7px;
-  }
 }
 
 input {
@@ -57,5 +72,10 @@ input {
 
 .v-application--wrap {
   width: 100%;
+}
+
+.v-application .white--text {
+    color: #FFFFFF;
+    caret-color: #FFFFFF;
 }
 </style>

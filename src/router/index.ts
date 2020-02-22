@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import Home from '../views/landing-page/Home.vue';
 import MaintainerCreatorView from '@/views/MaintainerCreatorView.vue';
 
 Vue.use(VueRouter);
@@ -9,6 +9,11 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    component: Home,
+  },
+  {
+    path: '/tworzenie-dokumentu',
+    name: 'maintainer:creator',
     component: MaintainerCreatorView,
   },
   {

@@ -3,50 +3,47 @@
     <h3>zmienne</h3>
     <div class="controller-group" v-for="(group, index) of keysByPrefix" :key="index">
       <div class="group-name" v-if="groupName(group) !== null">{{groupName(group)}}</div>
-      <div
-          class="variable-input"
-          :key="key"
-          v-for="key of group.variables"
-      >
+      <div class="variable-input" :key="key" v-for="key of group.variables">
         <div class="variable-title">{{key}}:</div>
 
-        <help-tooltip :text="commentary[key]"/>
+        <help-tooltip :text="commentary[key]" />
 
         <input
-            type="text"
-            :aria-label="key"
-            placeholder="null"
-            v-model="controllers.variables[key]"
+          type="text"
+          :aria-label="key"
+          placeholder="null"
+          v-model="controllers.variables[key]"
         />
       </div>
 
       <div v-for="key of group.ifStatements" :key="key" class="if-input">
         <div class="variable-title">{{key}}:</div>
-        <help-tooltip :text="commentary[key]"/>
+        <help-tooltip :text="commentary[key]" />
         <input
-            type="checkbox"
-            :aria-label="key"
-            :placeholder="key"
-            :title="key"
-            v-model="controllers.ifStatements[key]"
-            :key="key"
-        >
+          type="checkbox"
+          :aria-label="key"
+          :placeholder="key"
+          :title="key"
+          v-model="controllers.ifStatements[key]"
+          :key="key"
+        />
       </div>
-
     </div>
-
-
   </div>
 </template>
 
 <script lang="ts">
-import {keys, isNil, flatten, values, first, map} from 'lodash';
-import {Component, Vue, Prop} from 'vue-property-decorator';
-import {RenderArgs} from "@/extended-markdown-parser/renderer";
-import {Commentary} from "@/extended-markdown-parser/commentary";
-import HelpTooltip from "@/components/common/HelpTooltip.vue";
-import {DELIMITER, getPrefix, KeysByPrefix, keysByPrefix} from "@/display-helpers";
-
+import { keys, isNil, flatten, values, first, map } from 'lodash';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { RenderArgs } from '@/extended-markdown-parser/renderer';
+import { Commentary } from '@/extended-markdown-parser/commentary';
+import HelpTooltip from '@/components/common/HelpTooltip.vue';
+import {
+  DELIMITER,
+  getPrefix,
+  KeysByPrefix,
+  keysByPrefix,
+} from '@/display-helpers';
 
 @Component({
   components: {
@@ -54,15 +51,15 @@ import {DELIMITER, getPrefix, KeysByPrefix, keysByPrefix} from "@/display-helper
   },
 })
 export default class RenderControllers extends Vue {
-  @Prop({required: true}) controllers!: RenderArgs;
-  @Prop({required: true}) commentary!: Commentary;
+  @Prop({ required: true }) controllers!: RenderArgs;
+  @Prop({ required: true }) commentary!: Commentary;
 
   private get ifKeys(): string[] {
-    return keys(this.controllers.ifStatements)
+    return keys(this.controllers.ifStatements);
   }
 
   private get variableKeys(): string[] {
-    return keys(this.controllers.variables)
+    return keys(this.controllers.variables);
   }
 
   private commentaryFor(key: string): string | null {
@@ -77,9 +74,7 @@ export default class RenderControllers extends Vue {
 
   private groupName(group: KeysByPrefix): string | null {
     const prefix = getPrefix(first(flatten(values(group))) ?? '');
-    return isNil(prefix)
-      ? null
-      : prefix.replace(DELIMITER, '').toUpperCase()
+    return isNil(prefix) ? null : prefix.replace(DELIMITER, '').toUpperCase();
   }
 }
 </script>
@@ -113,7 +108,7 @@ $box-height: 2.5rem;
     grid-auto-flow: dense;
     text-overflow: ellipsis;
 
-    @include media("<=tablet") {
+    @include media('<=tablet') {
       grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
       padding: $gap/3;
     }
@@ -142,12 +137,11 @@ $box-height: 2.5rem;
 
       input {
         @include app-box;
-        width: $box-width*0.4;
+        width: $box-width * 0.4;
         margin-right: $gap;
 
-        @include media("<=tablet") {
-
-          width: $box-width*0.1;
+        @include media('<=tablet') {
+          width: $box-width * 0.1;
           padding: $gap/3;
         }
       }
@@ -157,10 +151,9 @@ $box-height: 2.5rem;
       @include grid-center;
       @include app-box;
       @include box-size($box-width, $box-height);
-      grid-template-columns: 5fr 2rem 5*$gap;
+      grid-template-columns: 5fr 2rem 5 * $gap;
       height: $input-height;
     }
   }
 }
-
 </style>

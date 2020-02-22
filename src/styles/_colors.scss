@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+$_colors: (
+    primary: #107a8b, 
+    secondary: #2cb978, 
+    tetriary:#83e85a, 
+    dark: #3b5441,
+    black: rgba(0, 0, 0, 0.897),
+    gray: rgba(211, 211, 211, 0.835),
+    white: rgb(246, 243, 243),
+);
+
+@function color($val) {
+    @return map.get($_colors, $val);
+}

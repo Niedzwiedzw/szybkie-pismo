@@ -1,10 +1,22 @@
 @import "./include-media";
+@import './colors';
+@import './animations';
 
 // variables
 $gap: 1.5rem;
-$primary-background-color: #EEEEEE;
+$primary-background-color: color(primary);
 $input-height: 3rem;
 $special-text-color: #42b983;
+
+$navbar-height: 4rem;
+
+$remaining-page: calc(100vh - #{$navbar-height});
+
+$font-x-large: 1.6rem;
+$font-large: 1.3rem;
+$font-medium: 1rem;
+$font-small: .85rem;
+$font-x-small: .55rem;
 
 @mixin grid-center {
   display: grid;
@@ -39,3 +51,24 @@ $special-text-color: #42b983;
   color: #2c3e50;
 }
 
+@mixin hoverable {
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  &:hover {
+    transform: rotate(2deg);
+    opacity: .9;
+  }
+}
+
+@mixin force-color($color) {
+  @keyframes force-color {
+    from {
+      color: $color !important;
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  animation: force-color 1s infinite;
+}
