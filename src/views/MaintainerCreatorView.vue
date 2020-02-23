@@ -21,6 +21,7 @@ import { defineComponent } from '@vue/composition-api';
 import { useDocumentRendering, usePFDGenerator } from '@/usecases.ts';
 
 export default defineComponent({
+  name: 'MaintainerCreatorView',
   components: {
     InputBox,
     RenderControllers,
@@ -113,7 +114,6 @@ export default defineComponent({
         color: lighten(gray, 40%);
         text-justify: center;
         transform: translateY(-2ch) translateX(30vw);
-
       }
     }
   }

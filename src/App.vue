@@ -33,6 +33,10 @@ export default defineComponent({
     height: $remaining-page;
     padding: $gap;
     color: color(black);
+
+    @include media("<=tablet") {
+      padding: $gap/3;
+    }
   }
 }
 
@@ -42,6 +46,7 @@ body, html, #app {
     height: 100vh;
     overflow: hidden;
     background-color: color(white);
+    font-family: 'Montserrat', ;
   }
 }
 
@@ -74,5 +79,10 @@ input {
 .v-application .white--text {
     color: #FFFFFF;
     caret-color: #FFFFFF;
+}
+
+span.highlight {
+  color: color(primary);
+  font-weight: 900;
 }
 </style>

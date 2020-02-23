@@ -1,7 +1,7 @@
 @import "./include-media";
-@import './colors';
-@import './animations';
-
+@import "./colors";
+@import "./animations";
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap");
 // variables
 $gap: 1.5rem;
 $primary-background-color: color(primary);
@@ -15,8 +15,8 @@ $remaining-page: calc(100vh - #{$navbar-height});
 $font-x-large: 1.6rem;
 $font-large: 1.3rem;
 $font-medium: 1rem;
-$font-small: .85rem;
-$font-x-small: .55rem;
+$font-small: 0.85rem;
+$font-x-small: 0.55rem;
 
 @mixin grid-center {
   display: grid;
@@ -33,14 +33,12 @@ $font-x-small: .55rem;
 }
 
 @mixin vuetify-shadow {
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 @mixin neo-shadow($size) {
   $spread: $size;
-  box-shadow:
-          $size $size $spread 0 rgba(black, .06),
-          -1*$size -1*$size $spread 0 rgba(white, .4);
+  box-shadow: $size $size $spread 0 rgba(black, 0.06), -1 * $size -1 * $size $spread 0 rgba(white, 0.4);
 }
 
 @mixin app-box {
@@ -53,10 +51,10 @@ $font-x-small: .55rem;
 
 @mixin hoverable {
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   &:hover {
     transform: rotate(2deg);
-    opacity: .9;
+    opacity: 0.9;
   }
 }
 
@@ -86,7 +84,64 @@ $font-x-small: .55rem;
 }
 
 @media print {
-  html, body {
+  html,
+  body,
+  #app {
     @include a4-page;
+    all: unset;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+
+    & * {
+      border: none;
+    }
+  }
+
+  *:not(.printing-context) {
+    all: reset !important;
+  
+  }
+}
+
+@mixin encouragement-card {
+  @include app-box;
+  @include grid-center;
+  @include float-mysteriously-once;
+  background-color: color(secondary);
+  border: 5px solid color(secondary);
+  color: color(white);
+  padding: $gap;
+  grid-gap: $gap/2;
+  text-align: center;
+  h3 {
+    color: color(white);
+    font-size: $font-large;
+    font-weight: 900;
+  }
+}
+
+@mixin default-view {
+  @include grid-center;
+  font-weight: bold;
+  grid-template-rows: min-content 1fr;
+  grid-gap: $gap/2;
+}
+
+@mixin app-button {
+  background-color: color(white);
+  color: color(secondary);
+  font-weight: bold;
+  padding: $gap/3;
+  margin: $gap/3;
+  border-radius: $gap/3;
+  @include hoverable;
+  text-transform: uppercase;
+}
+
+button {
+  @include app-button;
+  &.inactive {
+    opacity: .2;
   }
 }

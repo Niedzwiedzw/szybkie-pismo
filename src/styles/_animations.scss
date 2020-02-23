@@ -54,3 +54,58 @@
     @include hoverable;
     background-color: whitesmoke;
 }
+
+@keyframes float-mysteriously {
+    from {
+        transform: initial;
+    }
+
+    25% {
+        transform: translateY(-.5rem) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-.5rem) rotate(1deg);
+    }
+
+    75% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    to {
+        transform: initial;
+    }
+}
+
+@mixin float-mysteriously {
+    animation: infinite 10s float-mysteriously;
+}
+
+@keyframes float-mysteriously-appear {
+    from {
+        opacity: 0;
+        transform: initial;
+    }
+
+    25% {
+        transform: translateY(-.5rem) rotate(-1deg);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-.5rem) rotate(1deg);
+    }
+
+    75% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    to {
+        transform: initial;
+    }
+}
+
+@mixin float-mysteriously-once {
+    animation: 1.2s ease float-mysteriously-appear;
+}
+

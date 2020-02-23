@@ -2,7 +2,7 @@
   <div class="durlex-navbar">
     <div class="logo" @click="$router.push({name: 'home'})">Durlex</div>
     <div class="what-is-durlex">
-      czym jest <span class="lang-name">Durlex</span>?
+      czym jest <span class="highlight">Durlex</span>?
     </div>
     <div class="kontakt">kontakt</div>
     <v-icon
@@ -21,13 +21,16 @@ export default defineComponent({});
 <style lang="scss">
 @import '@/styles/styles';
 .durlex-navbar {
+  @include media('print') {
+    display: none !important;
+  }
   font-size: $font-large;
   font-weight: 900; 
   @include grid-center;
   height: $navbar-height;
   min-height: 4rem !important;
   color: color(white);
-  background-color: color(primary);
+  background-color: color(secondary);
   * {
     @include hoverable;
     justify-self: start;
@@ -51,6 +54,7 @@ export default defineComponent({});
   .logo {
     font-size: $font-x-large;
     margin-left: $gap;
+    color: color(primary);
   }
   grid-template-columns: 1fr;
   grid-gap: $gap;
@@ -62,7 +66,7 @@ export default defineComponent({});
     margin-right: $gap;
     margin-bottom: 10%;
     color: color(white) !important;
-    background-color: color(secondary);
+    background-color: color(primary);
     border-radius: 100%;
     height: 2rem;
     width: 2rem;

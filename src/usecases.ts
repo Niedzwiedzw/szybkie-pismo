@@ -3,6 +3,7 @@ import {
     computed,
     watch,
     Ref,
+    reactive,
 } from '@vue/composition-api';
 import { SUPPORTED_DOCUMENTS } from '@/documents';
 import { pick, keys, fromPairs, map, replace, capitalize, isNil } from 'lodash';
@@ -16,10 +17,10 @@ export const useDocumentRendering = () => {
     const supportedDocuments = ref(SUPPORTED_DOCUMENTS);
     const documentNames = computed(() => keys(supportedDocuments.value));
     const selected = ref<string | null>(null);
-    const kwargs = ref<RenderArgs>({ variables: {}, ifStatements: {} });
+    const kwargs = reactive<RenderArgs>({ variables: {}, ifStatements: {} });
     const allVariables = computed(() => [
-        ...keys(kwargs.value?.ifStatements ?? {}),
-        ...keys(kwargs.value?.variables ?? {}),
+        ...keys(kwargs.ifStatements ?? {}),
+        ...keys(kwargs.variables ?? {}),
     ]);
 
     const commentary = ref({});
@@ -40,7 +41,7 @@ export const useDocumentRendering = () => {
     const rendered = computed(() => {
         const renderer = new DynamicText(markdownInput.value);
         const [kwargs_, fn] = renderer.renderer;
-        const newKwargs = merged(kwargs_, kwargs.value);
+        const newKwargs = merged(kwargs_, kwargs);
         newKwargs.variables = pick(
             newKwargs.variables,
             keys(kwargs_.variables)
@@ -49,8 +50,9 @@ export const useDocumentRendering = () => {
             newKwargs.ifStatements,
             keys(kwargs_.ifStatements)
         ) as any;
-        kwargs.value = newKwargs;
-        return fn(kwargs.value);
+        kwargs.ifStatements = {...newKwargs.ifStatements};
+        kwargs.variables = {...newKwargs.variables};
+        return fn(kwargs);
     });
 
     watch(
@@ -65,6 +67,11 @@ export const useDocumentRendering = () => {
         () => markdownInput.value,
         () => setTimeout(() => commentary.value = updateOwn(emptyCommentary.value, commentary.value)),
     );
+    
+    const readyToPrint = computed(() => computed<boolean>(() => rendered.value.length > 0));
+    const printRendered = () => {
+        if (readyToPrint.value) window.print();
+      };
 
     return {
         markdownInput,
@@ -75,11 +82,11 @@ export const useDocumentRendering = () => {
         allVariables,
         commentary,
         rendered,
-        readyToPrint: computed<boolean>(() => rendered.value.length > 0),
+        readyToPrint,
     };
 }
 
-export const usePFDGenerator = () => {
+export const usePFDGenerator = () => {  // doesn't really work on firefox...
     return {
         printElement(element: HTMLDivElement, title?: string) {
             const contents = element.outerHTML;
