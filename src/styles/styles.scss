@@ -72,3 +72,21 @@ $font-x-small: .55rem;
 
   animation: force-color 1s infinite;
 }
+
+@mixin a4-page {
+  font-size: 12px !important;
+  width: 21cm !important;
+  height: 29.7cm !important;
+}
+
+@mixin a4-margin {
+  @include a4-page;
+  padding: 5ch 5ch 5ch 5ch !important;
+  overflow-y: scroll;
+}
+
+@media print {
+  html, body {
+    @include a4-page;
+  }
+}

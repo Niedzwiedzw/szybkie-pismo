@@ -125,7 +125,7 @@ $box-height: 2.5rem;
       height: $input-height;
       width: 100%;
       text-align: center;
-      background-color: darken($primary-background-color, 50%);
+      background-color: color(secondary);
     }
 
     .variable-input {

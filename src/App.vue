@@ -45,9 +45,6 @@ body, html, #app {
   }
 }
 
-#app {
-}
-
 // .v-application {
 //   background: $primary-background-color !important;
 // }

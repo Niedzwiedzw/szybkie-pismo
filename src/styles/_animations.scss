@@ -1,3 +1,5 @@
+@import './colors';
+
 .slide-enter-active, .slide-leave-active {
     transition: all .3s ease-in-out;
 }
@@ -5,3 +7,50 @@
     transform: translateX(100vw);
     opacity: 0;
 } 
+
+
+@mixin call-to-action($text) {
+    @keyframes call-to-action {
+        from {
+            transform: initial;
+        }
+
+        20% {
+            transform: translate3d(0, -2.5%, 0);
+        }
+        30% {
+            transform: translate3d(-1%, -2%, 0);
+        }
+        40% {
+            transform: translate3d(1%, -1.5%, 0);
+        }
+        50% {
+            transform: translate3d(-1%, -1%, 0);
+        }
+        60% {
+            transform: translate3d(1%, -0.5%, 0);
+        }
+        70% {
+            transform: translate3d(-1%, 0, 0);
+        }
+        80% {
+            transform: translate3d(1%, 0.5%, 0);
+        }
+        90% {
+            transform: translate3d(-1%, 1%, 0);
+        }
+
+        to {
+            transform: initial;
+        }
+    }
+    &::after {
+        content: $text;
+        color: color(secondary);
+    }
+    animation: 3s call-to-action;
+    border-color: color(secondary);
+    border-style: solid;
+    @include hoverable;
+    background-color: whitesmoke;
+}
