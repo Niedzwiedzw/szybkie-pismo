@@ -1,11 +1,11 @@
 <template>
   <div class="GenerationView">
-    <v-stepper v-model="step" vertical class="document-generation-stepper">
+    <v-stepper dark v-model="step" vertical class="document-generation-stepper">
       <!-- wybierz dokument -->
       <v-stepper-step :complete="step>1" step="1" class="step-title">Wybierz rodzaj dokumentu</v-stepper-step>
       <v-stepper-content dark class="step-box" step="1">
         <v-select v-model="selected" :items="documentNames"></v-select>
-        <button @click="step += 1">Kontynuuj</button>
+        <button @click="selected !== null && (step += 1)" :class="{inactive: (selected === null)}">Kontynuuj</button>
       </v-stepper-content>
       <!-- formularze -->
       <v-lazy>
@@ -95,11 +95,9 @@ export default defineComponent({
       all: unset;
   }
   .document-generation-stepper {
-    @include grid-center;
-    @include app-box;
-    @include encouragement-card;
     background-color: color(secondary) !important;
     margin: 0;
+    max-width: 100vw !important;
 
     .step-box {
       margin: 0 !important;
