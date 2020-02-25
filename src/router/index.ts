@@ -5,6 +5,7 @@ import MaintainerCreatorView from '@/views/MaintainerCreatorView.vue';
 import GenerationView from '@/views/document-generation/GenerationView.vue';
 import GenerationHello from '@/views/document-generation/GenerationHello.vue';
 import GenerationSelectDocument from '@/views/document-generation/GenerationSelectDocument.vue';
+import GenerationPrint from "@/views/document-generation/GenerationPrint.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,12 @@ const routes = [
     path: '/tworzenie-dokumentu',
     name: 'maintainer:creator',
     component: MaintainerCreatorView,
+  },
+  {
+    path: '/drukuj/:data',
+    name: 'client:print',
+    component: GenerationPrint,
+    props: true,
   },
   {
     path: '/dokument',

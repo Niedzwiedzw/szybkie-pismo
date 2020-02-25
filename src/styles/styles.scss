@@ -72,35 +72,36 @@ $font-x-small: 0.55rem;
 }
 
 @mixin a4-page {
-  font-size: 12px !important;
+  font-size: 16px !important;
   width: 21cm !important;
-  height: 29.7cm !important;
+  min-height: 29.7cm !important;
+  background-color: white;
 }
 
 @mixin a4-margin {
   @include a4-page;
   padding: 5ch 5ch 5ch 5ch !important;
-  overflow-y: scroll;
 }
 
 @media print {
   html,
   body,
   #app {
-    @include a4-page;
     all: unset;
     padding: 0 !important;
     margin: 0 !important;
-    overflow: hidden !important;
+    overflow: scroll !important;
+    width: 25cm;
 
     & * {
       border: none;
+      background-color: white !important;
     }
   }
 
-  *:not(.printing-context) {
-    all: reset !important;
-  
+  .site-content {
+    padding: 0 !important;
+    margin: 0 !important;
   }
 }
 
@@ -141,6 +142,7 @@ $font-x-small: 0.55rem;
 
 button {
   @include app-button;
+
   &.inactive {
     opacity: .2;
   }

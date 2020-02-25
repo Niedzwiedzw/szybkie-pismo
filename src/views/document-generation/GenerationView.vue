@@ -32,7 +32,7 @@
       <v-stepper-step :complete="step>3" step="4" class="step-title">Wydrukuj</v-stepper-step>
       <v-stepper-content dark class="step-box" step="4">
         <rendered-document-card :rendered="rendered"/>
-        <button @click="printRendered" :class="{inactive: !readyToPrint}">Drukuj</button>
+        <button @click="printRendered()" :class="{inactive: !readyToPrint}">Drukuj</button>
       </v-stepper-content>
     </v-stepper>
   </div>
@@ -82,16 +82,13 @@ export default defineComponent({
       const documentCreator = useDocumentCreator();
     return {
       ...documentCreator,
-      printRendered() {
-        if (documentCreator.readyToPrint.value) window.print();
-      },
     };
   },
 });
 </script>
 
 <style lang="scss">
-@import '@/styles/styles';
+@import 'src/styles/styles';
 .GenerationView {
   @include default-view;
   @include media('print') {

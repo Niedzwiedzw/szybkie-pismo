@@ -31,9 +31,6 @@ export default defineComponent({
     const {printElement} = usePFDGenerator();
     const documentRendering = useDocumentRendering();
     return {
-      printRendered() {
-        if (documentRendering.readyToPrint.value) window.print();
-      },
       ...documentRendering,
     }
   },

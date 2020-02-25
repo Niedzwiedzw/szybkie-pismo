@@ -10,7 +10,8 @@ import { pick, keys, fromPairs, map, replace, capitalize, isNil } from 'lodash';
 import { RenderArgs } from '@/extended-markdown-parser/renderer';
 import { Commentary } from '@/extended-markdown-parser/commentary';
 import { DynamicText } from '@/extended-markdown-parser/transform';
-import { merged, updateOwn } from '@/helpers';
+import {merged, toBinary, updateOwn} from '@/helpers';
+import router from "@/router";
 
 export const useDocumentRendering = () => {
     const markdownInput = ref('');
@@ -44,7 +45,7 @@ export const useDocumentRendering = () => {
         const newKwargs = merged(kwargs_, kwargs);
         newKwargs.variables = pick(
             newKwargs.variables,
-            keys(kwargs_.variables)
+            keys(kwargs_.variables),
         ) as any;
         newKwargs.ifStatements = pick(
             newKwargs.ifStatements,
@@ -70,7 +71,7 @@ export const useDocumentRendering = () => {
     
     const readyToPrint = computed(() => computed<boolean>(() => rendered.value.length > 0));
     const printRendered = () => {
-        if (readyToPrint.value) window.print();
+        if (readyToPrint.value) router.push({name: 'client:print', params: {data: toBinary(rendered.value)}});
       };
 
     return {
@@ -83,6 +84,7 @@ export const useDocumentRendering = () => {
         commentary,
         rendered,
         readyToPrint,
+        printRendered,
     };
 }
 

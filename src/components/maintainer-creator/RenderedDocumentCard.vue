@@ -21,12 +21,10 @@ export default defineComponent({
     },
   },
   setup() {
-    const { readyToPrint } = useDocumentRendering();
+    const { readyToPrint, printRendered } = useDocumentRendering();
     return {
       readyToPrint,
-      printRendered() {
-        if (readyToPrint.value) window.print();
-      },
+      printRendered,
     };
   },
 });

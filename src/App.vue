@@ -46,7 +46,7 @@ body, html, #app {
     height: 100vh;
     overflow: hidden;
     background-color: color(white);
-    font-family: 'Montserrat', ;
+    font-family: 'Montserrat', monospace;
   }
 }
 
