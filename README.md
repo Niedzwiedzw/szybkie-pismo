@@ -1,5 +1,7 @@
 # szybkie-pismo
 
+https://szybkie-pismo-secret-project.netlify.app/#/
+
 ## Project setup
 ```
 yarn install
